@@ -8,11 +8,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  final TextEditingController txtName = TextEditingController();
+  String _selectedImage = 'Lake';
+  final List<String> _images = ['Lake', 'Country', 'Mountain', 'Sea'];
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController txtName = TextEditingController();
-    final List<String> _images = ['Lake', 'Country', 'Mountain', 'Sea'];
-    String _selectedImage = 'Lake';
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -35,10 +37,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ))
                     .toList(),
                 onChanged: (selected) {
-                  print("Objeto seleccionado {selected}");
-                  setState(() {
-                    _selectedImage = selected ?? 'Lake';
-                  });
+                  print("Objeto seleccionado ${selected}");
+                  setState(() => _selectedImage = selected ?? 'Lake'
+                  );
                 }),
             ElevatedButton(
               onPressed: () {
