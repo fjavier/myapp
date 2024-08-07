@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:myapp/data/SPHelper.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -8,10 +11,16 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   final TextEditingController txtName = TextEditingController();
   String _selectedImage = 'Lake';
   final List<String> _images = ['Lake', 'Country', 'Mountain', 'Sea'];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSettings();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +47,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     .toList(),
                 onChanged: (selected) {
                   print("Objeto seleccionado ${selected}");
-                  setState(() => _selectedImage = selected ?? 'Lake'
-                  );
+                  setState(() => _selectedImage = selected ?? 'Lake');
                 }),
-            ElevatedButton(
-              onPressed: () {
-                print(txtName.text);
-              },
-              child: Text("Guardar"),
-            ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          saveSettings().then((value) {
+            String message = value
+                ? 'Configuración guardada correctamente'
+                : 'Error al guardar la configuración';
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(message),
+              duration: const Duration(seconds: 3),
+            ));
+          });
+        },
+        child: const Icon(Icons.save),
+      ),
     );
+  }
+
+  Future<bool> saveSettings() async {
+    final Sphelper helper = Sphelper();
+    try {
+      await helper.setSettings(txtName.text, _selectedImage);
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
+  }
+
+  Future getSettings() async {
+    final Sphelper helper = Sphelper();
+    Future<Map<String, String>> futureSettings = helper.getSettings();
+    futureSettings.then((settings) {
+      var name = settings['name'];
+      var image = settings['image'];
+      txtName.text = name ?? '';
+      _selectedImage = image ?? 'Lake';
+      setState(() {});
+    });
   }
 }
