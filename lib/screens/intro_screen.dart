@@ -11,7 +11,7 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   String _userName = '';
-  var _imageSelected = 'Sea';
+  String _imageSelected = 'Sea';
 
   @override
   void initState() {
@@ -26,12 +26,12 @@ class _IntroScreenState extends State<IntroScreen> {
     return Scaffold(
         body: Stack(children: [
       Positioned.fill(
-          child: Image.asset("assets/Sea.jpg", fit: BoxFit.cover)),
-      const Align(
-          alignment: Alignment(0, -0.5),
+          child: Image.asset("assets/$_imageSelected.jpg", fit: BoxFit.cover)),
+      Align(
+          alignment: const Alignment(0, -0.5),
           child: Text(
-            "Welcome ",
-            style: TextStyle(fontSize: 30, color: Colors.white, shadows: [
+            "Welcome $_userName",
+            style: const TextStyle(fontSize: 30, color: Colors.white, shadows: [
               Shadow(color: Colors.black, blurRadius: 10, offset: Offset(5, 5))
             ]),
           )),
@@ -53,7 +53,7 @@ class _IntroScreenState extends State<IntroScreen> {
       print("cargando configuraciones...");
       var image = setting['image'];
       _userName = setting['name'] ?? '';
-      _imageSelected = image == null || image.isEmpty  ? 'Sea' : image;
+      _imageSelected = image == null || image.isEmpty ? 'Sea' : image;
       setState(() {});
     });
   }
