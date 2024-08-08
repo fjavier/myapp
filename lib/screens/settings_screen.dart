@@ -85,8 +85,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     futureSettings.then((settings) {
       var name = settings['name'];
       var image = settings['image'];
+      print("nombre ${name}");
       txtName.text = name ?? '';
-      _selectedImage = image ?? 'Lake';
+      _selectedImage = image == null || image.isEmpty ? 'Lake' : image;
       setState(() {});
     });
   }

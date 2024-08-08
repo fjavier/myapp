@@ -22,10 +22,11 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Imagen seleccionada $_imageSelected");
     return Scaffold(
         body: Stack(children: [
       Positioned.fill(
-          child: Image.asset("assets/${_imageSelected}.jpg", fit: BoxFit.cover)),
+          child: Image.asset("assets/Sea.jpg", fit: BoxFit.cover)),
       const Align(
           alignment: Alignment(0, -0.5),
           child: Text(
@@ -49,8 +50,10 @@ class _IntroScreenState extends State<IntroScreen> {
   void getSettings() async {
     Sphelper helper = Sphelper();
     helper.getSettings().then((setting) {
+      print("cargando configuraciones...");
+      var image = setting['image'];
       _userName = setting['name'] ?? '';
-      _imageSelected = setting['image'] ?? 'Sea';
+      _imageSelected = image == null || image.isEmpty  ? 'Sea' : image;
       setState(() {});
     });
   }
