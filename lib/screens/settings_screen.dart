@@ -15,7 +15,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getSettings();
   }
@@ -24,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text("Settings"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -44,13 +43,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ))
                     .toList(),
                 onChanged: (selected) {
-                  print("Objeto seleccionado ${selected}");
                   setState(() => _selectedImage = selected ?? 'Lake');
                 }),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Guardar',
         onPressed: () {
           saveSettings().then((value) {
             String message = value
@@ -62,7 +61,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ));
           });
         },
-        child: const Icon(Icons.save),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.save),
+            Text('Guardar'),
+          ],
+        ),
       ),
     );
   }
@@ -83,7 +88,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     futureSettings.then((settings) {
       var name = settings['name'];
       var image = settings['image'];
-      print("nombre ${name}");
       txtName.text = name ?? '';
       _selectedImage = image == null || image.isEmpty ? 'Lake' : image;
       setState(() {});
